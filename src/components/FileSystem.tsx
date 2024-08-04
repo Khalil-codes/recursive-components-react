@@ -4,6 +4,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export type Node = {
   name: string;
@@ -34,12 +35,15 @@ const Folder = ({ node }: { node: Node }) => {
         }}
       >
         {node.nodes?.length && (
-          <button>
+          <motion.button
+            animate={{ rotate: open ? 90 : 0 }}
+            transition={{ type: "spring", bounce: 0, duration: 0.4 }}
+          >
             <ChevronRight
               size={16}
               className={`text-gray-500 transition ease-in`}
             />
-          </button>
+          </motion.button>
         )}
         {node.type === "file" ? (
           <FileIcon size={24} className="ml-6" />
@@ -52,13 +56,21 @@ const Folder = ({ node }: { node: Node }) => {
         )}
         <span>{node.name}</span>
       </span>
-      {open && node.nodes && (
-        <ul className="pl-6">
-          {node.nodes.map((node) => (
-            <Folder node={node} />
-          ))}
-        </ul>
-      )}
+      <AnimatePresence>
+        {open && node.nodes && (
+          <motion.ul
+            initial={{ height: 0 }}
+            animate={{ height: "auto" }}
+            exit={{ height: 0 }}
+            transition={{ type: "spring", bounce: 0, duration: 0.4 }}
+            className="pl-6 overflow-hidden"
+          >
+            {node.nodes.map((node) => (
+              <Folder node={node} />
+            ))}
+          </motion.ul>
+        )}
+      </AnimatePresence>
     </li>
   );
 };
