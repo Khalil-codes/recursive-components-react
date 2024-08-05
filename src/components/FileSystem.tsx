@@ -29,7 +29,7 @@ const Folder = ({ node }: { node: Node }) => {
   return (
     <li className="my-1.5">
       <span
-        className="flex items-center gap-2"
+        className="flex items-center gap-2 cursor-pointer group"
         onClick={() => {
           if (node.nodes) setOpen((prev) => !prev);
         }}
@@ -54,7 +54,7 @@ const Folder = ({ node }: { node: Node }) => {
             className={!node.nodes ? "ml-6" : ""}
           />
         )}
-        <span>{node.name}</span>
+        <span className="group-hover:font-bold">{node.name}</span>
       </span>
       <AnimatePresence>
         {open && node.nodes && (
